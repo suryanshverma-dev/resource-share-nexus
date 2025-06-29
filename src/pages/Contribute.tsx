@@ -1,11 +1,15 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Share2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Share2, CheckCircle, AlertCircle, Lock } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import { mockApi } from '../services/mockApi';
+import LoginDialog from '../components/LoginDialog';
+import SignupDialog from '../components/SignupDialog';
 
 const Contribute = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -30,6 +34,36 @@ const Contribute = () => {
     'Psychology',
     'Literature'
   ];
+
+  // If user is not authenticated, show login prompt
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md mx-auto text-center p-8">
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Lock className="h-10 w-10 text-green-600" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Login Required</h1>
+          <p className="text-gray-600 mb-8">
+            You need to be logged in to share resources with the community. 
+            Join thousands of students helping each other succeed!
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <LoginDialog>
+              <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                Login
+              </button>
+            </LoginDialog>
+            <SignupDialog>
+              <button className="px-6 py-3 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors">
+                Sign Up Free
+              </button>
+            </SignupDialog>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

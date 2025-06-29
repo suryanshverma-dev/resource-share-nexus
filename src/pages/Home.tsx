@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Users, Share2, TrendingUp, ArrowRight, Lock } from 'lucide-react';
+import { BookOpen, Users, Share2, TrendingUp, ArrowRight, Lock, Sparkles, Star } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import SearchBar from '../components/SearchBar';
 import ResourceCard from '../components/ResourceCard';
@@ -50,19 +50,57 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white">
-        <div className="container mx-auto px-4 py-16 lg:py-24">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+      {/* Enhanced Hero Section */}
+      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-20 h-20 bg-white rounded-full"></div>
+          <div className="absolute top-32 right-20 w-16 h-16 bg-green-300 rounded-full"></div>
+          <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-green-200 rounded-full"></div>
+          <div className="absolute bottom-40 right-1/3 w-8 h-8 bg-white rounded-full"></div>
+        </div>
+        
+        <div className="relative container mx-auto px-4 py-20 lg:py-28">
+          <div className="text-center max-w-5xl mx-auto">
+            {/* Badge */}
+            <div className="inline-flex items-center px-4 py-2 bg-green-500 bg-opacity-20 backdrop-blur-sm rounded-full border border-green-400 border-opacity-30 mb-6">
+              <Sparkles className="h-4 w-4 mr-2 text-green-200" />
+              <span className="text-sm font-medium text-green-100">Trusted by 10,000+ students</span>
+            </div>
+            
+            {/* Main Heading */}
+            <h1 className="text-5xl lg:text-7xl font-bold mb-8 leading-tight">
               Share Knowledge,
-              <span className="text-green-200"> Excel Together</span>
+              <br />
+              <span className="text-green-200 relative">
+                Excel Together
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-green-300 rounded-full"></div>
+              </span>
             </h1>
-            <p className="text-xl lg:text-2xl mb-8 text-green-100 leading-relaxed">
+            
+            {/* Subtitle */}
+            <p className="text-xl lg:text-2xl mb-12 text-green-100 leading-relaxed max-w-4xl mx-auto">
               Access thousands of study resources shared by college students worldwide. 
-              Find notes, cheat sheets, and guides for your courses.
+              Find notes, cheat sheets, and guides for your courses — all in one place.
             </p>
             
+            {/* Stats */}
+            <div className="flex flex-wrap justify-center gap-8 mb-12 text-green-100">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-white">10,000+</div>
+                <div className="text-sm">Resources</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-white">50+</div>
+                <div className="text-sm">Subjects</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-white">5,000+</div>
+                <div className="text-sm">Students</div>
+              </div>
+            </div>
+            
+            {/* Search Bar */}
             <div className="mb-12">
               {isAuthenticated ? (
                 <SearchBar 
@@ -77,27 +115,31 @@ const Home = () => {
                       placeholder="Login to search resources..."
                       disabled={true}
                     />
-                    <div className="absolute inset-0 bg-black bg-opacity-20 rounded-lg flex items-center justify-center">
-                      <Lock className="h-6 w-6 text-white" />
+                    <div className="absolute inset-0 bg-black bg-opacity-20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                      <div className="text-center">
+                        <Lock className="h-8 w-8 text-white mx-auto mb-2" />
+                        <p className="text-white font-medium">Login to unlock search</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
             </div>
             
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {isAuthenticated ? (
                 <>
                   <Link
                     to="/browse"
-                    className="inline-flex items-center px-8 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
+                    className="inline-flex items-center px-8 py-4 bg-white text-green-600 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                   >
                     Browse Resources
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                   <Link
                     to="/contribute"
-                    className="inline-flex items-center px-8 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-400 transition-colors shadow-lg"
+                    className="inline-flex items-center px-8 py-4 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-400 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-green-400"
                   >
                     Share Your Notes
                     <Share2 className="ml-2 h-5 w-5" />
@@ -106,13 +148,13 @@ const Home = () => {
               ) : (
                 <>
                   <LoginDialog>
-                    <button className="inline-flex items-center px-8 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg">
+                    <button className="inline-flex items-center px-8 py-4 bg-white text-green-600 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                       Login to Browse
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </button>
                   </LoginDialog>
                   <SignupDialog>
-                    <button className="inline-flex items-center px-8 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-400 transition-colors shadow-lg">
+                    <button className="inline-flex items-center px-8 py-4 bg-green-500 text-white font-semibold rounded-xl hover:bg-green-400 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 border border-green-400">
                       Sign Up Free
                       <Share2 className="ml-2 h-5 w-5" />
                     </button>
