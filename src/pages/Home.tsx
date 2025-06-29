@@ -1,21 +1,31 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Users, Share2, TrendingUp, ArrowRight } from 'lucide-react';
+import { BookOpen, Users, Share2, TrendingUp, ArrowRight, Lock } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import SearchBar from '../components/SearchBar';
 import ResourceCard from '../components/ResourceCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import LoginDialog from '../components/LoginDialog';
+import SignupDialog from '../components/SignupDialog';
 import { mockApi } from '../services/mockApi';
 
 const Home = () => {
   const [trendingResources, setTrendingResources] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchTrendingResources = async () => {
       try {
-        const resources = await mockApi.getResources({ limit: 6 });
-        setTrendingResources(resources);
+        if (isAuthenticated) {
+          const resources = await mockApi.getResources({ limit: 6 });
+          setTrendingResources(resources);
+        } else {
+          // Show only 2 resources as preview for non-authenticated users
+          const resources = await mockApi.getResources({ limit: 2 });
+          setTrendingResources(resources);
+        }
       } catch (error) {
         console.error('Failed to fetch trending resources:', error);
       } finally {
@@ -24,9 +34,13 @@ const Home = () => {
     };
 
     fetchTrendingResources();
-  }, []);
+  }, [isAuthenticated]);
 
   const handleSearch = (query: string, filters?: { subject?: string }) => {
+    if (!isAuthenticated) {
+      return; // Don't navigate if not authenticated
+    }
+    
     const searchParams = new URLSearchParams();
     if (query) searchParams.set('q', query);
     if (filters?.subject) searchParams.set('subject', filters.subject);
@@ -50,27 +64,61 @@ const Home = () => {
             </p>
             
             <div className="mb-12">
-              <SearchBar 
-                onSearch={handleSearch}
-                placeholder="Search for computer science notes, math formulas, study guides..."
-              />
+              {isAuthenticated ? (
+                <SearchBar 
+                  onSearch={handleSearch}
+                  placeholder="Search for computer science notes, math formulas, study guides..."
+                />
+              ) : (
+                <div className="max-w-2xl mx-auto">
+                  <div className="relative">
+                    <SearchBar 
+                      onSearch={() => {}}
+                      placeholder="Login to search resources..."
+                      disabled={true}
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-20 rounded-lg flex items-center justify-center">
+                      <Lock className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/browse"
-                className="inline-flex items-center px-8 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
-              >
-                Browse Resources
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
-                to="/contribute"
-                className="inline-flex items-center px-8 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-400 transition-colors shadow-lg"
-              >
-                Share Your Notes
-                <Share2 className="ml-2 h-5 w-5" />
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to="/browse"
+                    className="inline-flex items-center px-8 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
+                  >
+                    Browse Resources
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                  <Link
+                    to="/contribute"
+                    className="inline-flex items-center px-8 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-400 transition-colors shadow-lg"
+                  >
+                    Share Your Notes
+                    <Share2 className="ml-2 h-5 w-5" />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <LoginDialog>
+                    <button className="inline-flex items-center px-8 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg">
+                      Login to Browse
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </button>
+                  </LoginDialog>
+                  <SignupDialog>
+                    <button className="inline-flex items-center px-8 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-400 transition-colors shadow-lg">
+                      Sign Up Free
+                      <Share2 className="ml-2 h-5 w-5" />
+                    </button>
+                  </SignupDialog>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -133,27 +181,69 @@ const Home = () => {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 <TrendingUp className="inline h-8 w-8 mr-2 text-green-600" />
-                Trending Resources
+                {isAuthenticated ? 'Trending Resources' : 'Preview Resources'}
               </h2>
-              <p className="text-gray-600">Popular study materials shared by the community</p>
+              <p className="text-gray-600">
+                {isAuthenticated 
+                  ? 'Popular study materials shared by the community'
+                  : 'Get a taste of what our community has to offer'
+                }
+              </p>
             </div>
-            <Link
-              to="/browse"
-              className="text-green-600 hover:text-green-700 font-medium flex items-center"
-            >
-              View All
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                to="/browse"
+                className="text-green-600 hover:text-green-700 font-medium flex items-center"
+              >
+                View All
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            ) : (
+              <LoginDialog>
+                <button className="text-green-600 hover:text-green-700 font-medium flex items-center">
+                  Login to See More
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </button>
+              </LoginDialog>
+            )}
           </div>
           
           {loading ? (
             <LoadingSpinner size="lg" className="py-12" />
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {trendingResources.map((resource) => (
-                <ResourceCard key={resource.id} resource={resource} />
-              ))}
-            </div>
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {trendingResources.map((resource) => (
+                  <ResourceCard key={resource.id} resource={resource} />
+                ))}
+              </div>
+              
+              {!isAuthenticated && (
+                <div className="mt-8 text-center">
+                  <div className="bg-white rounded-lg border-2 border-dashed border-green-300 p-8">
+                    <Lock className="h-12 w-12 text-green-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      Want to see more?
+                    </h3>
+                    <p className="text-gray-600 mb-6">
+                      Join thousands of students sharing knowledge and access our full library of resources.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <LoginDialog>
+                        <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                          Login
+                        </button>
+                      </LoginDialog>
+                      <SignupDialog>
+                        <button className="px-6 py-3 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors">
+                          Sign Up Free
+                        </button>
+                      </SignupDialog>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

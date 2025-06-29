@@ -1,15 +1,21 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Menu, X, BookOpen, User, LogIn, UserPlus } from 'lucide-react';
+import { Search, Menu, X, BookOpen, User, LogIn, UserPlus, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import LoginDialog from './LoginDialog';
 import SignupDialog from './SignupDialog';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+  };
 
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
@@ -49,20 +55,35 @@ const Header = () => {
             </Link>
           </nav>
 
-          {/* Auth Buttons - Desktop */}
+          {/* Auth Section - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <LoginDialog>
-              <button className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-green-600 transition-colors">
-                <LogIn className="h-4 w-4" />
-                <span>Login</span>
-              </button>
-            </LoginDialog>
-            <SignupDialog>
-              <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
-                <UserPlus className="h-4 w-4" />
-                <span>Sign Up</span>
-              </button>
-            </SignupDialog>
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-700">Welcome, {user?.name}</span>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-green-600 transition-colors"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <>
+                <LoginDialog>
+                  <button className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-green-600 transition-colors">
+                    <LogIn className="h-4 w-4" />
+                    <span>Login</span>
+                  </button>
+                </LoginDialog>
+                <SignupDialog>
+                  <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                    <UserPlus className="h-4 w-4" />
+                    <span>Sign Up</span>
+                  </button>
+                </SignupDialog>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -107,26 +128,43 @@ const Header = () => {
                 Contribute
               </Link>
               
-              {/* Mobile Auth Buttons */}
+              {/* Mobile Auth Section */}
               <div className="border-t pt-4 mt-4 space-y-2">
-                <LoginDialog>
-                  <button 
-                    className="w-full flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <LogIn className="h-4 w-4" />
-                    <span>Login</span>
-                  </button>
-                </LoginDialog>
-                <SignupDialog>
-                  <button 
-                    className="w-full flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors mx-4"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <UserPlus className="h-4 w-4" />
-                    <span>Sign Up</span>
-                  </button>
-                </SignupDialog>
+                {isAuthenticated ? (
+                  <>
+                    <div className="px-4 py-2 text-gray-700">
+                      Welcome, {user?.name}
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      <span>Logout</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <LoginDialog>
+                      <button 
+                        className="w-full flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <LogIn className="h-4 w-4" />
+                        <span>Login</span>
+                      </button>
+                    </LoginDialog>
+                    <SignupDialog>
+                      <button 
+                        className="w-full flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors mx-4"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <UserPlus className="h-4 w-4" />
+                        <span>Sign Up</span>
+                      </button>
+                    </SignupDialog>
+                  </>
+                )}
               </div>
             </nav>
           </div>

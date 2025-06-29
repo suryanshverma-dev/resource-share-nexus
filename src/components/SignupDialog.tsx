@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserPlus } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { toast } from "@/hooks/use-toast";
 
 interface SignupDialogProps {
   children: React.ReactNode;
@@ -24,6 +26,8 @@ const SignupDialog: React.FC<SignupDialogProps> = ({ children }) => {
     confirmPassword: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { signup } = useAuth();
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -33,24 +37,37 @@ const SignupDialog: React.FC<SignupDialogProps> = ({ children }) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+      toast({
+        title: "Password Mismatch",
+        description: "Passwords do not match. Please try again.",
+        variant: "destructive",
+      });
       return;
     }
     
     setIsLoading(true);
     
-    // TODO: Replace with actual API call
-    console.log('Signup attempt:', formData);
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await signup(formData.name, formData.email, formData.password);
+      toast({
+        title: "Account Created",
+        description: "Welcome to ResourceHub!",
+      });
+      setOpen(false);
+      setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+    } catch (error) {
+      toast({
+        title: "Signup Failed",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-      // Handle success/error here
-    }, 1000);
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>

@@ -1,10 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Grid, List, Filter } from 'lucide-react';
+import { Grid, List, Filter, Lock } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import SearchBar from '../components/SearchBar';
 import ResourceCard from '../components/ResourceCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import LoginDialog from '../components/LoginDialog';
+import SignupDialog from '../components/SignupDialog';
 import { mockApi } from '../services/mockApi';
 
 const Browse = () => {
@@ -13,6 +15,7 @@ const Browse = () => {
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedSubject, setSelectedSubject] = useState('');
+  const { isAuthenticated } = useAuth();
 
   const subjects = [
     'Computer Science',
@@ -31,17 +34,21 @@ const Browse = () => {
     const fetchResources = async () => {
       setLoading(true);
       try {
-        const query = searchParams.get('q') || '';
-        const subject = searchParams.get('subject') || '';
-        
-        const params = {
-          search: query,
-          subject: subject,
-        };
-        
-        const data = await mockApi.getResources(params);
-        setResources(data);
-        setSelectedSubject(subject);
+        if (isAuthenticated) {
+          const query = searchParams.get('q') || '';
+          const subject = searchParams.get('subject') || '';
+          
+          const params = {
+            search: query,
+            subject: subject,
+          };
+          
+          const data = await mockApi.getResources(params);
+          setResources(data);
+        } else {
+          setResources([]);
+        }
+        setSelectedSubject(searchParams.get('subject') || '');
       } catch (error) {
         console.error('Failed to fetch resources:', error);
       } finally {
@@ -50,7 +57,7 @@ const Browse = () => {
     };
 
     fetchResources();
-  }, [searchParams]);
+  }, [searchParams, isAuthenticated]);
 
   const handleSearch = (query: string, filters?: { subject?: string }) => {
     const newSearchParams = new URLSearchParams();
@@ -68,6 +75,40 @@ const Browse = () => {
     }
     setSearchParams(newSearchParams);
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="container mx-auto px-4">
+          <div className="text-center py-16">
+            <div className="max-w-md mx-auto">
+              <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Lock className="h-12 w-12 text-green-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Login Required
+              </h2>
+              <p className="text-gray-600 mb-8">
+                Please login or create an account to browse and access study resources.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <LoginDialog>
+                  <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    Login
+                  </button>
+                </LoginDialog>
+                <SignupDialog>
+                  <button className="px-6 py-3 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors">
+                    Sign Up
+                  </button>
+                </SignupDialog>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

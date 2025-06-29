@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LogIn } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { toast } from "@/hooks/use-toast";
 
 interface LoginDialogProps {
   children: React.ReactNode;
@@ -20,23 +22,35 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ children }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // TODO: Replace with actual API call
-    console.log('Login attempt:', { email, password });
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await login(email, password);
+      toast({
+        title: "Login Successful",
+        description: "Welcome back!",
+      });
+      setOpen(false);
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      toast({
+        title: "Login Failed",
+        description: "Please check your credentials and try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
-      // Handle success/error here
-    }, 1000);
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
