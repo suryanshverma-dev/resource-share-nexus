@@ -1,73 +1,139 @@
-# Welcome to your Lovable project
 
-## Project info
+# ResourceHub 📚
 
-**URL**: https://lovable.dev/projects/42dacaae-cdbf-4563-ae58-cc1c8bde5286
+An open-source platform for college students to share and discover study resources, notes, and cheat sheets.
 
-## How can I edit this code?
+## 🚀 Features
 
-There are several ways of editing your application.
+- **Browse Resources**: Search and filter study materials by subject and tags
+- **Resource Sharing**: Contribute your own study materials via Google Drive links
+- **Community Driven**: Comment and discuss resources with fellow students
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Accessibility**: Built with WCAG 2.1 guidelines in mind
 
-**Use Lovable**
+## 🛠️ Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/42dacaae-cdbf-4563-ae58-cc1c8bde5286) and start prompting.
+- **Frontend**: React 18, TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Icons**: Lucide React
+- **State Management**: TanStack Query
+- **Routing**: React Router
+- **Build Tool**: Vite
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🏃‍♂️ Quick Start
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 16+ and npm
+- Git
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/resource-hub.git
+   cd resource-hub
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+4. **Open your browser**
+   Navigate to [http://localhost:8080](http://localhost:8080)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Header.tsx
+│   ├── SearchBar.tsx
+│   ├── ResourceCard.tsx
+│   └── LoadingSpinner.tsx
+├── pages/              # Page components
+│   ├── Home.tsx
+│   ├── Browse.tsx
+│   ├── ResourceDetail.tsx
+│   └── Contribute.tsx
+├── services/           # API services
+│   └── mockApi.ts
+└── lib/               # Utilities
+    └── utils.ts
 ```
 
-**Edit a file directly in GitHub**
+## 🤝 Contributing
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-**Use GitHub Codespaces**
+### Development Setup
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Run tests: `npm test` (when available)
+5. Commit changes: `git commit -m 'Add amazing feature'`
+6. Push to branch: `git push origin feature/amazing-feature`
+7. Open a Pull Request
 
-## What technologies are used for this project?
+## 📝 API Integration
 
-This project is built with:
+Currently using mock API for development. The structure is ready for easy integration with a real backend:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `GET /api/resources` - Fetch resources with filters
+- `GET /api/resources/:id` - Get resource details
+- `POST /api/resources` - Submit new resource
+- `GET /api/resources/:id/comments` - Get comments
+- `POST /api/resources/:id/comments` - Add comment
 
-## How can I deploy this project?
+## 🎨 Design Guidelines
 
-Simply open [Lovable](https://lovable.dev/projects/42dacaae-cdbf-4563-ae58-cc1c8bde5286) and click on Share -> Publish.
+- **Colors**: Professional blue (#3B82F6) and green (#10B981) accents
+- **Typography**: Inter font family for excellent readability
+- **Spacing**: Consistent spacing using Tailwind's scale
+- **Components**: Modular, reusable components with proper props
+- **Accessibility**: ARIA labels, keyboard navigation, proper contrast
 
-## Can I connect a custom domain to my Lovable project?
+## 📱 Mobile Responsiveness
 
-Yes, you can!
+The app is fully responsive with:
+- Mobile-first design approach
+- Collapsible navigation menu
+- Touch-friendly buttons and inputs
+- Optimized layouts for all screen sizes
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🔧 Available Scripts
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🌟 Acknowledgments
+
+- Built with [Lovable](https://lovable.dev)
+- Icons by [Lucide](https://lucide.dev)
+- UI components by [shadcn/ui](https://ui.shadcn.com)
+
+## 📞 Support
+
+If you have questions or need help:
+
+1. Check the [Issues](https://github.com/your-username/resource-hub/issues) page
+2. Create a new issue if your question isn't already answered
+3. Join our community discussions
+
+---
+
+Made with ❤️ by students, for students
