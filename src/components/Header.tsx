@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Menu, X, BookOpen } from 'lucide-react';
+import { Search, Menu, X, BookOpen, User, LogIn, UserPlus } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +15,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <BookOpen className="h-8 w-8 text-blue-600" />
+            <BookOpen className="h-8 w-8 text-green-600" />
             <span className="text-xl font-bold text-gray-900">ResourceHub</span>
           </Link>
 
@@ -24,7 +24,7 @@ const Header = () => {
             <Link
               to="/"
               className={`font-medium transition-colors ${
-                isActive('/') ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600'
+                isActive('/') ? 'text-green-600' : 'text-gray-700 hover:text-green-600'
               }`}
             >
               Home
@@ -32,7 +32,7 @@ const Header = () => {
             <Link
               to="/browse"
               className={`font-medium transition-colors ${
-                isActive('/browse') ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600'
+                isActive('/browse') ? 'text-green-600' : 'text-gray-700 hover:text-green-600'
               }`}
             >
               Browse
@@ -40,17 +40,29 @@ const Header = () => {
             <Link
               to="/contribute"
               className={`font-medium transition-colors ${
-                isActive('/contribute') ? 'text-blue-600' : 'text-gray-700 hover:text-blue-600'
+                isActive('/contribute') ? 'text-green-600' : 'text-gray-700 hover:text-green-600'
               }`}
             >
               Contribute
             </Link>
           </nav>
 
+          {/* Auth Buttons - Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
+            <button className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-green-600 transition-colors">
+              <LogIn className="h-4 w-4" />
+              <span>Login</span>
+            </button>
+            <button className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+              <UserPlus className="h-4 w-4" />
+              <span>Sign Up</span>
+            </button>
+          </div>
+
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+            className="md:hidden p-2 rounded-md text-gray-700 hover:text-green-600 hover:bg-gray-100"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -64,7 +76,7 @@ const Header = () => {
               <Link
                 to="/"
                 className={`block px-4 py-2 font-medium transition-colors ${
-                  isActive('/') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                  isActive('/') ? 'text-green-600 bg-green-50' : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -73,7 +85,7 @@ const Header = () => {
               <Link
                 to="/browse"
                 className={`block px-4 py-2 font-medium transition-colors ${
-                  isActive('/browse') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                  isActive('/browse') ? 'text-green-600 bg-green-50' : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -82,12 +94,30 @@ const Header = () => {
               <Link
                 to="/contribute"
                 className={`block px-4 py-2 font-medium transition-colors ${
-                  isActive('/contribute') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                  isActive('/contribute') ? 'text-green-600 bg-green-50' : 'text-gray-700 hover:text-green-600 hover:bg-gray-50'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contribute
               </Link>
+              
+              {/* Mobile Auth Buttons */}
+              <div className="border-t pt-4 mt-4 space-y-2">
+                <button 
+                  className="w-full flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-gray-50 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <LogIn className="h-4 w-4" />
+                  <span>Login</span>
+                </button>
+                <button 
+                  className="w-full flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors mx-4"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <UserPlus className="h-4 w-4" />
+                  <span>Sign Up</span>
+                </button>
+              </div>
             </nav>
           </div>
         )}

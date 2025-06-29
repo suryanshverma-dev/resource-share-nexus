@@ -37,33 +37,36 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
+      <section className="bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white">
         <div className="container mx-auto px-4 py-16 lg:py-24">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
               Share Knowledge,
-              <span className="text-blue-200"> Excel Together</span>
+              <span className="text-green-200"> Excel Together</span>
             </h1>
-            <p className="text-xl lg:text-2xl mb-8 text-blue-100 leading-relaxed">
+            <p className="text-xl lg:text-2xl mb-8 text-green-100 leading-relaxed">
               Access thousands of study resources shared by college students worldwide. 
               Find notes, cheat sheets, and guides for your courses.
             </p>
             
             <div className="mb-12">
-              <SearchBar onSearch={handleSearch} />
+              <SearchBar 
+                onSearch={handleSearch}
+                placeholder="Search for computer science notes, math formulas, study guides..."
+              />
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/browse"
-                className="inline-flex items-center px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
+                className="inline-flex items-center px-8 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-lg"
               >
                 Browse Resources
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
                 to="/contribute"
-                className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors shadow-lg"
+                className="inline-flex items-center px-8 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-400 transition-colors shadow-lg"
               >
                 Share Your Notes
                 <Share2 className="ml-2 h-5 w-5" />
@@ -88,8 +91,8 @@ const Home = () => {
           
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div className="text-center p-6">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="h-8 w-8 text-blue-600" />
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Comprehensive Resources</h3>
               <p className="text-gray-600">
@@ -110,8 +113,8 @@ const Home = () => {
             </div>
             
             <div className="text-center p-6">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Share2 className="h-8 w-8 text-purple-600" />
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Share2 className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Easy Sharing</h3>
               <p className="text-gray-600">
@@ -136,7 +139,7 @@ const Home = () => {
             </div>
             <Link
               to="/browse"
-              className="text-blue-600 hover:text-blue-700 font-medium flex items-center"
+              className="text-green-600 hover:text-green-700 font-medium flex items-center"
             >
               View All
               <ArrowRight className="ml-1 h-4 w-4" />
@@ -156,7 +159,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-green-600 to-blue-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-green-600 to-green-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
             Ready to Start Sharing?
